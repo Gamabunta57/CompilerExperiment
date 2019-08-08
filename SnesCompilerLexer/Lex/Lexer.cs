@@ -1,25 +1,31 @@
-﻿using SnesCompilerLexer.components;
+﻿using SnesCompilerLexer.Lex.components;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SnesCompilerLexer
+namespace SnesCompilerLexer.Lex
 {
     public class Lexer
     {
         const char EOF = '\0';
 
         int _currentIndex;
+        string _stringToLex;
 
-        readonly string _stringToLex;
         readonly IList<TokenDescription> _availableToken;
 
-        public Lexer(string stringToLex)
+        public Lexer()
         {
-            _stringToLex = stringToLex;
             _currentIndex = 0;
             _availableToken = new List<TokenDescription>();
         }
+
+        public void SetStringToLex(string stringToLex)
+        {
+            _stringToLex = stringToLex;
+            _currentIndex = 0;
+        }
+
         public void AddTokenDefinition(TokenDescription token) => _availableToken.Add(token);
 
         public Token Next()

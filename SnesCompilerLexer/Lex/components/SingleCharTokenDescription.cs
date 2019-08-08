@@ -1,5 +1,5 @@
 ﻿
-namespace SnesCompilerLexer.components
+namespace SnesCompilerLexer.Lex.components
 {
     public class SingleCharTokenDescription : TokenDescription
     {

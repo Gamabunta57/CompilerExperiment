@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SnesCompilerLexer.components
+namespace SnesCompilerLexer.Lex.components
 {
     public class Token
     {

@@ -1,4 +1,4 @@
-﻿namespace SnesCompilerLexer.components
+﻿namespace SnesCompilerLexer.Lex.components
 {
     class CharSetTokenDescription : TokenDescription
     {
