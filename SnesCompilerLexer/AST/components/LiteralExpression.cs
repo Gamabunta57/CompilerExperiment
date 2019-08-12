@@ -4,11 +4,15 @@ namespace SnesCompilerLexer.AST.components
 {
     class LiteralExpression : Expression
     {
-        public LiteralExpression(TokenType tokenType)
+        public LiteralExpression(Token token)
         {
-            TokenType = tokenType;
+            Token = token;
         }
 
-        public TokenType TokenType { get; }
+        public Token Token { get; }
+
+        public override object Value => Token.Value;
+
+        public override string ToString() => $"{Value}";
     }
 }

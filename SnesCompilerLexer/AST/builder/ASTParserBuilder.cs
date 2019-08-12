@@ -15,6 +15,8 @@ namespace SnesCompilerLexer.AST.builder
 
             astParser.AddExpression(numberDescription);
 
+            astParser.AddExpression(new UnaryExpressionDescription(TokenType.Minus, 5));
+
             astParser.AddExpression(new BinaryExpressionDescription(numberDescription, TokenType.Plus, numberDescription,1));
             astParser.AddExpression(new BinaryExpressionDescription(numberDescription, TokenType.Minus, numberDescription, 1));
 
@@ -22,6 +24,8 @@ namespace SnesCompilerLexer.AST.builder
             astParser.AddExpression(new BinaryExpressionDescription(numberDescription, TokenType.Slash, numberDescription, 2));
 
             astParser.AddExpression(new BlockExpressionDescription(TokenType.OpenParenthesis, TokenType.CloseParenthesis, 4));
+
+            astParser.AddExpression(new LiteralExpressionDescription(TokenType.EOF, -1));
 
             return astParser;
         }

@@ -1,5 +1,6 @@
 ﻿
 using SnesCompilerLexer.Lex.components;
+using System.Collections.Generic;
 
 namespace SnesCompilerLexer.AST.components.description
 {
@@ -10,5 +11,6 @@ namespace SnesCompilerLexer.AST.components.description
 
         public abstract bool CanStartWith(TokenType tokenType);
         public abstract bool CanEndWith(TokenType tokenType);
+
     }
 }

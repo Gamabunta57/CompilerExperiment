@@ -5,7 +5,8 @@ using System.Text;
 
 namespace SnesCompilerLexer.AST.components
 {
-    abstract class Expression
+    public abstract class Expression
     {
+        public abstract object Value { get; }
     }
 }

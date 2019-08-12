@@ -7,11 +7,7 @@ namespace SnesCompilerLexer.AST.components.description
 {
     class UnaryExpressionDescription : ExpressionDescription
     {
-        public UnaryExpressionDescription(TokenType tokenType, ExpressionDescription expressionDescription, int precedence) : base(precedence)
-        {
-            TokenType = tokenType;
-            ExpressionDescription = expressionDescription;
-        }
+        public UnaryExpressionDescription(TokenType tokenType, int precedence) : base(precedence) => TokenType = tokenType;
 
         public TokenType TokenType { get; }
         public ExpressionDescription ExpressionDescription { get; }

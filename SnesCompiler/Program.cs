@@ -1,4 +1,6 @@
-﻿using SnesCompilerLexer.AST.builder;
+﻿using SnesCompilerLexer.AST;
+using SnesCompilerLexer.AST.builder;
+using SnesCompilerLexer.Lex;
 using SnesCompilerLexer.Lex.builder;
 using SnesCompilerLexer.Lex.components;
 using System;
@@ -7,6 +9,10 @@ namespace SnesCompiler
 {
     class Program
     {
+
+        static bool DoDisplayToken = false;
+        static bool DoDisplayAST = true;
+
         static void Main(string[] args)
         {
             var lexer = StandardLexer.Build();
@@ -18,18 +24,41 @@ namespace SnesCompiler
                 string line = Console.ReadLine();
 
                 if (line == "exit") break;
-
-                lexer.SetStringToLex(line);               
-                Token t;
-                do
+                else if (line == "switch token")
                 {
-                    t = lexer.Next();
-                    Console.Write(t);
-                } while (!t.IsEOFToken());
+                    DoDisplayToken = !DoDisplayToken;
+                    continue;
+                }else if(line == "switch ast")
+                {
+                    DoDisplayAST = !DoDisplayAST;
+                    continue;
+                }
+
+                if (DoDisplayToken)
+                    DisplayToken(lexer, line);
+                if (DoDisplayAST)
+                    DisplayAST(astParser, line); 
+              
 
                 Console.WriteLine();
             }
+        }
 
+        static void DisplayToken(Lexer lexer, string line)
+        {
+            lexer.SetStringToLex(line);
+            Token t;
+            do
+            {
+                t = lexer.Next();
+                Console.Write(t);
+            } while (!t.IsEOFToken());
+        }
+
+        static void DisplayAST(ASTParser astParser, string line)
+        {
+            astParser.Parse(line);
+            Console.Write(astParser.LastExpression);
         }
     }
 }

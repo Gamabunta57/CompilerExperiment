@@ -1,4 +1,5 @@
-﻿using SnesCompilerLexer.Lex.components;
+﻿using System.Collections.Generic;
+using SnesCompilerLexer.Lex.components;
 
 namespace SnesCompilerLexer.AST.components.description
 {
@@ -15,7 +16,9 @@ namespace SnesCompilerLexer.AST.components.description
         public TokenType Operand { get; }
         public ExpressionDescription Right { get; }
 
-        public override bool CanStartWith(TokenType tokenType) => Left.CanStartWith(tokenType);
+        public override bool CanStartWith(TokenType tokenType) => Operand == tokenType;
         public override bool CanEndWith(TokenType tokenType) => Right.CanEndWith(tokenType);
+
+
     }
 }

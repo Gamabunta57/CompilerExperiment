@@ -4,15 +4,12 @@ namespace SnesCompilerLexer.AST.components
 {
     class BinaryExpression : Expression
     {
-        public BinaryExpression(Expression left, TokenType operand, Expression right)
-        {
-            Left = left;
-            Operand = operand;
-            Right = right;
-        }
 
-        public Expression Left { get; }
-        public TokenType Operand { get; }
-        public Expression Right { get; }
+        public Expression Left { get; set; }
+        public Token Operand { get; set; }
+        public Expression Right { get; set; }
+
+        public override object Value => $"{Left} {Operand.Value} {Right}";
+        public override string ToString() => $"({Value})";
     }
 }
