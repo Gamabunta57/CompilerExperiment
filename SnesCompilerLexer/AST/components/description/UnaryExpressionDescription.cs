@@ -13,6 +13,5 @@ namespace SnesCompilerLexer.AST.components.description
         public ExpressionDescription ExpressionDescription { get; }
 
         public override bool CanStartWith(TokenType tokenType) => tokenType == TokenType;
-        public override bool CanEndWith(TokenType tokenType) => ExpressionDescription.CanEndWith(tokenType);
     }
 }

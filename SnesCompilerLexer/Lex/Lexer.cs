@@ -14,6 +14,10 @@ namespace SnesCompilerLexer.Lex
 
         readonly IList<TokenDescription> _availableToken;
 
+        public bool HasNextChar() => _currentIndex < _stringToLex.Length;
+        public char NextChar() => ++_currentIndex < _stringToLex.Length ? _stringToLex[_currentIndex] : EOF;
+        public char CurrentChar => _currentIndex < _stringToLex.Length ? _stringToLex[_currentIndex] : EOF;
+
         public Lexer()
         {
             _currentIndex = 0;
@@ -31,12 +35,7 @@ namespace SnesCompilerLexer.Lex
         public Token Next()
         {
             var tokenDescription = GetTokenDescriptionFromChar(CurrentChar);
-            var stringBuilder = new StringBuilder(CurrentChar.ToString());
-
-            while (tokenDescription.Match(NextChar()) && CurrentChar != EOF)
-                stringBuilder.Append(CurrentChar);
-
-            return new Token(tokenDescription.Type, stringBuilder.ToString());
+            return tokenDescription.ParseToken(this);
         }
 
         TokenDescription GetTokenDescriptionFromChar(char c)
@@ -48,7 +47,5 @@ namespace SnesCompilerLexer.Lex
             throw new Exception($"Unexpected token found : '{c}'");
         }
 
-        char NextChar() => ++_currentIndex < _stringToLex.Length ? _stringToLex[_currentIndex] : EOF;
-        char CurrentChar => _currentIndex < _stringToLex.Length ? _stringToLex[_currentIndex] : EOF;
     }
 }

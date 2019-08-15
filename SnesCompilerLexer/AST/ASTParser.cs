@@ -17,6 +17,8 @@ namespace SnesCompilerLexer.AST
         readonly IList<Token> _tokenList;
         readonly IList<ExpressionDescription> _expressionList;
 
+        public Token CurrentToken => _tokenList[_currentTokenIndex];
+
         public ASTParser(Lexer lexer)
         {
             _lexer = lexer;
@@ -25,14 +27,14 @@ namespace SnesCompilerLexer.AST
         }
         public void AddExpression(ExpressionDescription binaryExpression) => _expressionList.Add(binaryExpression);
 
-        public void Parse(string line)
+        public Expression Parse(string line)
         {
             _lexer.SetStringToLex(line);
             _tokenList.Clear();
             _currentTokenIndex = 0;
 
             FetchToken();
-            ParseText();
+            return ParseText();
         }
 
         private void FetchToken()
@@ -47,70 +49,63 @@ namespace SnesCompilerLexer.AST
             while (!token.IsEOFToken());
         }
 
-        private void ParseText()
+        private Expression ParseText()
         {
-            for (_currentTokenIndex = 0; _currentTokenIndex < _tokenList.Count;)
-            {
-                var e = ParseExpression();
-                if(e != null)
-                    LastExpression = e;
-            }
+            return ParseExpression();
         }
 
         private Expression ParseExpression()
         {
-            var expressionDescription = GetMatchingExpressionDescription(_tokenList[_currentTokenIndex]);
-            if (expressionDescription is LiteralExpressionDescription led)
-                return ParseLiteralExpression(led);
-            else if (expressionDescription is UnaryExpressionDescription ued)
-                return ParseUnaryExpression(ued);
-            else if (expressionDescription is BinaryExpressionDescription bied)
-                return ParseBinaryExpression(bied);
-            else
-                throw new Exception("Unvalid expression");
+
+            var e = ParsePrimaryExpression();
+            return ParseBinaryExpression(e);
         }
 
-        private ExpressionDescription GetMatchingExpressionDescription(Token token)
+        private Expression ParsePrimaryExpression()
         {
-            foreach (var expressionDescription in _expressionList)
-                if (expressionDescription.CanStartWith(token.Type))
-                    return expressionDescription;
-                
-
-            throw new Exception("Bad expression encountered");
-        }
-
-        private Expression ParseLiteralExpression(LiteralExpressionDescription led)
-        {
-            var token = _tokenList[_currentTokenIndex++];
-
-            return led.TokenType == TokenType.EOF ? null : new LiteralExpression(token);
-        }
-
-        private Expression ParseBinaryExpression(BinaryExpressionDescription bied)
-        {
-            var token = _tokenList[_currentTokenIndex++];
-            var lhs = LastExpression;
-            var e = new BinaryExpression()
+            switch (_tokenList[_currentTokenIndex].Type)
             {
-                Left = lhs,
-                Operand = token
-            };
+                case TokenType.OpenParenthesis:
+                    {
+                        _currentTokenIndex++;
+                        var e = ParseExpression();
+                        if (_tokenList[_currentTokenIndex].Type != TokenType.CloseParenthesis)
+                            throw new Exception($"Attended ')', received {_tokenList[_currentTokenIndex].Value}");
 
-            LastExpression = e;
-            e.Right = ParseExpression();
-            return e;
+                        return e;
+                    }
+
+                case TokenType.Number:
+                    {
+                        return new LiteralExpression(_tokenList[_currentTokenIndex++]);
+                    }
+                default:
+                    throw new Exception("Attended primary expression");
+            }
         }
 
-        private Expression ParseUnaryExpression(UnaryExpressionDescription ued)
+        private Expression ParseBinaryExpression(Expression priorExpression)
         {
-            var e = new UnaryExpression()
+            var op = _tokenList[_currentTokenIndex];
+            switch (op.Type)
             {
-                Operand = _tokenList[_currentTokenIndex++]
-            };
+                case TokenType.Plus:
+                case TokenType.Star:
+                    {
+                        _currentTokenIndex++;
+                        var right = ParseExpression();
+                        return null == right
+                ? priorExpression
+                : new BinaryExpression
+                {
+                    Left = priorExpression,
+                    Operand = op,
+                    Right = right
+                };
+                    }
 
-            e.Expression = ParseExpression();
-            return e;
+            }
+            return priorExpression;
         }
     }
 }

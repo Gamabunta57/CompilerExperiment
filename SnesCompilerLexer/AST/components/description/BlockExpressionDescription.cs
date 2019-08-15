@@ -13,8 +13,9 @@ namespace SnesCompilerLexer.AST.components.description
 
         public TokenType Start { get; }
         public TokenType End { get; }
+        public override bool IsPrimaryExpression => true;
 
         public override bool CanStartWith(TokenType tokenType) => tokenType == Start;
-        public override bool CanEndWith(TokenType tokenType) => tokenType == End;
+        public bool CanEndWith(TokenType tokenType) => tokenType == End;
     }
 }

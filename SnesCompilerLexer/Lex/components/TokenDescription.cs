@@ -6,5 +6,7 @@ namespace SnesCompilerLexer.Lex.components
         public TokenType Type { get; }
         public TokenDescription(TokenType type) => Type = type;
         public abstract bool Match(char c);
+
+        public abstract Token ParseToken(Lexer lexer);
     }
 }

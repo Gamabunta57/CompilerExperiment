@@ -1,6 +1,8 @@
-﻿namespace SnesCompilerLexer.Lex.components
+﻿using System.Text;
+
+namespace SnesCompilerLexer.Lex.components
 {
-    class CharSetTokenDescription : TokenDescription
+    class CharSetTokenDescription : MultipleCharTokenDescription
     {
         readonly char[] CharSet;
         public CharSetTokenDescription(TokenType type, char[] charSet) : base(type) => CharSet = charSet;

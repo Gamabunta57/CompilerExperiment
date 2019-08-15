@@ -1,7 +1,9 @@
 ﻿
+using System.Text;
+
 namespace SnesCompilerLexer.Lex.components
 {
-    class CharRangeTokenDescription : TokenDescription
+    class CharRangeTokenDescription : MultipleCharTokenDescription
     {
         readonly char From;
         readonly char To;

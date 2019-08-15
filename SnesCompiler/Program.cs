@@ -57,8 +57,7 @@ namespace SnesCompiler
 
         static void DisplayAST(ASTParser astParser, string line)
         {
-            astParser.Parse(line);
-            Console.Write(astParser.LastExpression);
+            Console.Write(astParser.Parse(line));
         }
     }
 }

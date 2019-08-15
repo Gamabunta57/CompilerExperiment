@@ -10,7 +10,6 @@ namespace SnesCompilerLexer.AST.components.description
         public int Precedence { get; }
 
         public abstract bool CanStartWith(TokenType tokenType);
-        public abstract bool CanEndWith(TokenType tokenType);
-
+        public virtual bool IsPrimaryExpression => false;
     }
 }

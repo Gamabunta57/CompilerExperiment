@@ -1,7 +1,9 @@
 ﻿
+using System.Text;
+
 namespace SnesCompilerLexer.Lex.components
 {
-    class CharRangeSetTokenDescription : TokenDescription
+    class CharRangeSetTokenDescription : MultipleCharTokenDescription
     {
         readonly char[] CharRangeSet;
         public CharRangeSetTokenDescription(TokenType type, char[] charRangeSet) : base(type)
@@ -23,6 +25,5 @@ namespace SnesCompilerLexer.Lex.components
 
             return false;
         }
-
     }
 }
